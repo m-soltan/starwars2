@@ -33,7 +33,7 @@ protected:
 	bool checkSpeed() { return speed >= minSpeed && speed <= 10 * minSpeed; }
 public:
 	Speed speed;
-	RebelStarship() : Starship(0), speed(0) {}
+//	RebelStarship() : Starship(0), speed(0) {}
 	RebelStarship(ShieldPoints sP, Speed s) :
 			Starship(sP), speed(s) {}
 	~RebelStarship() override = 0;
@@ -52,5 +52,12 @@ class XWing : public RebelStarship, public ArmedUnit {
 public:
 	XWing(ShieldPoints, Speed, AttackPower);
 };
+
+std::shared_ptr<Explorer> createExplorer(ShieldPoints sP, Speed s);
+std::shared_ptr<StarCruiser> createStarCruiser(
+		ShieldPoints sP,
+		Speed s,
+		AttackPower a);
+std::shared_ptr<XWing> createXWing(ShieldPoints sP, Speed s, AttackPower a);
 
 #endif //STARWARS2_REBELFLEET_H

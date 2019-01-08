@@ -28,3 +28,15 @@ XWing::XWing(ShieldPoints sP, Speed s, AttackPower a) :
 		RebelStarship(sP, s), ArmedUnit(a) {
 	assert(checkSpeed());
 }
+
+std::shared_ptr<Explorer> createExplorer(ShieldPoints sP, Speed s) {
+	return std::shared_ptr<Explorer>(new Explorer(sP, s));
+}
+
+std::shared_ptr<StarCruiser> createStarCruiser(ShieldPoints sP, Speed s, AttackPower a) {
+	return std::shared_ptr<StarCruiser>(new StarCruiser(sP, s, a));
+}
+
+std::shared_ptr<XWing> createXWing(ShieldPoints sP, Speed s, AttackPower a) {
+	return std::shared_ptr<XWing>(new XWing(sP, s, a));
+}

@@ -1,13 +1,15 @@
+#include <vector>
 #include "rebelfleet.h"
 
 #ifndef STARWARS2_IMPERIALFLEET_H
 #define STARWARS2_IMPERIALFLEET_H
 
-class ImperialStarship : public Starship, public ArmedUnit {
-protected:
+class ImperialStarship : public ArmedUnit, public Starship {
+public:
 	ImperialStarship(ShieldPoints sP, AttackPower a) :
 			ArmedUnit(a),
 			Starship(sP) {}
+	~ImperialStarship() override = 0;
 };
 
 class DeathStar : public ImperialStarship {
@@ -21,8 +23,16 @@ public:
 			ImperialStarship(sP, a) {}
 };
 
-// TODO
-class Squadron : public ImperialStarship {};
+class Squadron : public ArmedUnit, public Participant {
+	typedef std::shared_ptr<ImperialStarship> unitPtr;
+	std::vector<unitPtr> roster;
+	template <typename T>
+	static AttackPower totalPower(T list);
+public:
+	explicit Squadron(std::vector<unitPtr> list);
+	Squadron(std::initializer_list<unitPtr> list);
+	void takeDamage(AttackPower) override;
+};
 
 class TIEFighter : public ImperialStarship {
 public:
@@ -34,6 +44,7 @@ std::shared_ptr<DeathStar> createDeathStar(ShieldPoints sP, AttackPower a);
 std::shared_ptr<ImperialDestroyer> createImperialDestroyer(
 		ShieldPoints sP,
 		AttackPower a);
+std::shared_ptr<Squadron> createSquadron(T);
 std::shared_ptr<TIEFighter> createTIEFighter(ShieldPoints sP, AttackPower a);
 
 #endif //STARWARS2_IMPERIALFLEET_H

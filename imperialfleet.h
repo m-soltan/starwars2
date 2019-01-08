@@ -44,7 +44,10 @@ std::shared_ptr<DeathStar> createDeathStar(ShieldPoints sP, AttackPower a);
 std::shared_ptr<ImperialDestroyer> createImperialDestroyer(
 		ShieldPoints sP,
 		AttackPower a);
-std::shared_ptr<Squadron> createSquadron(T);
+std::shared_ptr<Squadron> createSquadron(
+		std::vector<std::shared_ptr<ImperialStarship>>);
+std::shared_ptr<Squadron> createSquadron(
+		std::initializer_list<std::shared_ptr<ImperialStarship>>);
 std::shared_ptr<TIEFighter> createTIEFighter(ShieldPoints sP, AttackPower a);
 
 #endif //STARWARS2_IMPERIALFLEET_H

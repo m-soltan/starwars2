@@ -7,6 +7,8 @@ void Starship::takeDamage(AttackPower a) {
 	shield = std::max(0, shield - a);
 }
 
+Participant::~Participant() = default;
+
 Starship::~Starship() = default;
 
 AttackPower ArmedUnit::getAttackPower() { return attackPower; }

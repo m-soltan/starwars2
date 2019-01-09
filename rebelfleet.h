@@ -12,18 +12,20 @@ constexpr Speed minSpeed = 299'796;
 
 class Participant {
 public:
+	virtual bool isAlive() const = 0;
 	virtual void takeDamage(AttackPower) = 0;
-	virtual ~Participant() = 0;
+//	virtual ~Participant() = 0;
 };
 
-class Starship : public Participant {
+class Starship : public virtual Participant {
 protected:
 	ShieldPoints shield;
 	explicit Starship(ShieldPoints sP) : shield(sP) {}
 public:
+	bool isAlive() const override { return getShield() > 0; }
 	ShieldPoints getShield() const;
 	void takeDamage(AttackPower) override;
-	~Starship() override = 0;
+//	~Starship() override = 0;
 };
 
 class ArmedUnit {
@@ -36,19 +38,18 @@ public:
 
 class RebelStarship : public Starship {
 protected:
+	Speed speed;
 	bool checkSpeed() { return speed >= minSpeed && speed <= 10 * minSpeed; }
 public:
-	Speed speed;
-//	RebelStarship() : Starship(0), speed(0) {}
 	RebelStarship(ShieldPoints sP, Speed s) :
 			Starship(sP), speed(s) {}
-	~RebelStarship() override = 0;
+//	~RebelStarship() override = 0;
 };
 
 class Explorer : public RebelStarship {
 public:
 	Explorer(ShieldPoints, Speed);
-	~Explorer() override = default;
+//	~Explorer() override = default;
 };
 class StarCruiser : public ArmedUnit, public RebelStarship {
 public:

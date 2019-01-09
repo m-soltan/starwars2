@@ -7,15 +7,15 @@ void Starship::takeDamage(AttackPower a) {
 	shield = std::max(0, shield - a);
 }
 
-Participant::~Participant() = default;
+//Participant::~Participant() = default;
 
-Starship::~Starship() = default;
+//Starship::~Starship() = default;
 
 AttackPower ArmedUnit::getAttackPower() { return attackPower; }
 
 ArmedUnit::~ArmedUnit() = default;
 
-RebelStarship::~RebelStarship() = default;
+//RebelStarship::~RebelStarship() = default;
 
 Explorer::Explorer(ShieldPoints sP, Speed s) : RebelStarship(sP, s) {
 	assert(checkSpeed());

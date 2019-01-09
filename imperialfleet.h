@@ -4,12 +4,20 @@
 #ifndef STARWARS2_IMPERIALFLEET_H
 #define STARWARS2_IMPERIALFLEET_H
 
-class ImperialStarship : public ArmedUnit, public Starship {
+class ImperiumMember : public virtual Participant, public ArmedUnit {
+public:
+	explicit ImperiumMember(AttackPower a) : ArmedUnit(a) {}
+};
+
+class ImperialStarship :
+		public ImperiumMember,
+		public Starship {
 public:
 	ImperialStarship(ShieldPoints sP, AttackPower a) :
-			ArmedUnit(a),
+			ImperiumMember(a),
 			Starship(sP) {}
-	~ImperialStarship() override = 0;
+	void takeDamage(AttackPower a) override { Starship::takeDamage(a); }
+	~ImperialStarship() override = default;
 };
 
 class DeathStar : public ImperialStarship {
@@ -23,12 +31,15 @@ public:
 			ImperialStarship(sP, a) {}
 };
 
-class Squadron : public ArmedUnit, public Participant {
-	typedef std::shared_ptr<ImperialStarship> unitPtr;
+class Squadron : public ImperiumMember {
+	typedef std::shared_ptr<ImperiumMember> unitPtr;
 	std::vector<unitPtr> roster;
 	template <typename T>
 	static AttackPower totalPower(T list);
 public:
+	bool isAlive() const override;
+	template <typename T>
+	static std::vector<unitPtr> asMembers(T list);
 	explicit Squadron(std::vector<unitPtr> list);
 	Squadron(std::initializer_list<unitPtr> list);
 	void takeDamage(AttackPower) override;

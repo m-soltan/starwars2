@@ -5,8 +5,16 @@
 #include "imperialfleet.h"
 
 using std::shared_ptr;
+template <typename T>
+using initList = std::initializer_list<T>;
 
-ImperialStarship::~ImperialStarship() = default;
+//ImperialStarship::~ImperialStarship() = default;
+
+bool Squadron::isAlive() const {
+	for (const auto &e : roster)
+		if (e->isAlive()) return true;
+	return false;
+}
 
 template <typename T>
 AttackPower Squadron::totalPower(T list) {
@@ -18,12 +26,21 @@ AttackPower Squadron::totalPower(T list) {
 	return ans;
 }
 
+template <typename T>
+std::vector<Squadron::unitPtr> Squadron::asMembers(T list) {
+	std::vector<Squadron::unitPtr> ans;
+	ans.reserve(list.size());
+	for (const auto &e : list)
+		ans.emplace_back(Squadron::unitPtr(e));
+	return ans;
+}
+
 Squadron::Squadron(std::vector<Squadron::unitPtr> list) :
-		ArmedUnit(totalPower<std::vector<Squadron::unitPtr>>(list)),
+		ImperiumMember(totalPower<std::vector<Squadron::unitPtr>>(list)),
 		roster(std::move(list)) {}
 
-Squadron::Squadron(std::initializer_list<Squadron::unitPtr> list) :
-		ArmedUnit(totalPower<std::initializer_list<Squadron::unitPtr>>(list)),
+Squadron::Squadron(initList<Squadron::unitPtr> list) :
+		ImperiumMember(totalPower<initList<Squadron::unitPtr>>(list)),
 		roster(list) {}
 
 void Squadron::takeDamage(AttackPower a) {
@@ -46,10 +63,20 @@ shared_ptr<TIEFighter> createTIEFighter(ShieldPoints sP, AttackPower a) {
 
 shared_ptr<Squadron> createSquadron(
 		std::vector<shared_ptr<ImperialStarship>> list) {
+	return shared_ptr<Squadron>(new Squadron(Squadron::asMembers(std::move(list))));
+}
+
+shared_ptr<Squadron> createSquadron(
+		std::vector<shared_ptr<ImperiumMember>> list) {
 	return shared_ptr<Squadron>(new Squadron(std::move(list)));
 }
 
 shared_ptr<Squadron> createSquadron(
 		std::initializer_list<shared_ptr<ImperialStarship>> list) {
+	return shared_ptr<Squadron>(new Squadron(Squadron::asMembers(list)));
+}
+
+shared_ptr<Squadron> createSquadron(
+		std::initializer_list<shared_ptr<ImperiumMember>> list) {
 	return shared_ptr<Squadron>(new Squadron(list));
 }

@@ -9,10 +9,7 @@ class ImperiumMember : public virtual Participant, public ArmedUnit {
 //	void beHit(RebelStarship r);
 public:
 	explicit ImperiumMember(AttackPower a) : ArmedUnit(a) {}
-	void attack(RebelStarship &r) {
-		r.takeDamage(getAttackPower());
-		takeDamage(r.dS->retaliate());
-	}
+	void attack(const std::shared_ptr<RebelStarship> &r);
 };
 
 class ImperialStarship :
@@ -45,7 +42,7 @@ class Squadron : public ImperiumMember {
 public:
 	size_t count() const override;
 	template <typename T>
-	static std::vector<unitPtr> asMembers(T list);
+	static std::vector<unitPtr> upCastPointers(T list);
 	explicit Squadron(std::vector<unitPtr> list);
 	Squadron(std::initializer_list<unitPtr> list);
 	void takeDamage(AttackPower) override;

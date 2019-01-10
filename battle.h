@@ -1,3 +1,4 @@
+#include <iostream>
 #include "rebelfleet.h"
 #include "imperialfleet.h"
 
@@ -31,6 +32,7 @@ class SpaceBattle {
 	
 	SpaceBattle() = default;
 	SpaceBattle(SpaceBattle &other) = default;
+	void announceWinner();
 	void attack();
 public:
 	class Builder {

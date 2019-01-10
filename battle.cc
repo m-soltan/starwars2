@@ -1,7 +1,13 @@
 #include "battle.h"
 
+Clock2_3_5::Clock2_3_5(int timeStart, int timeLimit) :
+		timeStart(timeStart),
+		timeLimit(timeLimit),
+		currentTime(timeStart) {
+}
+
 bool Clock2_3_5::isAttackTime() const {
-	if (currentTime % 2 || currentTime % 3)
+	if (currentTime % 2 && currentTime % 3)
 		return false;
 	else
 		return currentTime % 5 != 0;
@@ -11,12 +17,28 @@ void Clock2_3_5::modTime(galaxyTime_t x) {
 	currentTime += x;
 }
 
-Clock2_3_5::Clock2_3_5(int timeStart, int timeLimit) :
-		timeStart(timeStart),
-		timeLimit(timeLimit) {
+void SpaceBattle::announceWinner() {
+	bool noImperials(countImperialFleet() == 0);
+	bool noRebels(countRebelFleet() == 0);
+	
+	if (noImperials && noRebels)
+		std::cout << "DRAW\n";
+	
+	if (noImperials && !noRebels)
+		std::cout << "REBELLION WON\n";
+	
+	if (noRebels && !noImperials)
+		std::cout << "IMPERIUM WON\n";
 }
 
-void SpaceBattle::attack() {}
+void SpaceBattle::attack() {
+	for (auto &e : imperials) {
+		for (auto &f : rebels) {
+			if (e->count() && f->count())
+				e->attack(f);
+		}
+	}
+}
 
 SpaceBattle::Builder::Builder() {
 	battle = std::shared_ptr<SpaceBattle>(new SpaceBattle());
@@ -63,12 +85,14 @@ size_t SpaceBattle::countImperialFleet() const {
 size_t SpaceBattle::countRebelFleet() const {
 	size_t ans = 0;
 	for (const auto &e : rebels)
-		if (e->getShield() > 0) ++ans;
+		ans += e->count();
 	return ans;
 }
 
 void SpaceBattle::tick(galaxyTime_t x) {
-	if (clock->isAttackTime())
+	announceWinner();
+	if (clock->isAttackTime()) {
 		attack();
+	}
 	clock->modTime(x);
 }

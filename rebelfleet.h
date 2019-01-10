@@ -8,11 +8,9 @@ using AttackPower = int;
 using ShieldPoints = int;
 using Speed = int;
 
-constexpr Speed minSpeed = 299'796;
-
 class Participant {
 public:
-	virtual bool isAlive() const = 0;
+	virtual size_t count() const = 0;
 	virtual void takeDamage(AttackPower) = 0;
 //	virtual ~Participant() = 0;
 };
@@ -22,8 +20,8 @@ protected:
 	ShieldPoints shield;
 	explicit Starship(ShieldPoints sP) : shield(sP) {}
 public:
-	bool isAlive() const override { return getShield() > 0; }
 	ShieldPoints getShield() const;
+	size_t count() const override;
 	void takeDamage(AttackPower) override;
 //	~Starship() override = 0;
 };
@@ -36,11 +34,35 @@ public:
 	virtual ~ArmedUnit() = 0;
 };
 
+class ImperiumMember;
+
+class DefenseStrategy {
+public:
+	virtual AttackPower retaliate() const = 0;
+};
+
+class Retaliates : public DefenseStrategy {
+	std::shared_ptr<ArmedUnit> aU;
+public:
+	explicit Retaliates(std::shared_ptr<ArmedUnit> ship) :
+			aU(std::move(ship)) {
+	}
+	AttackPower retaliate() const override {
+		return aU->getAttackPower();
+	}
+};
+
+class DoesNotRetaliate : public DefenseStrategy {
+public:
+	AttackPower retaliate() const override { return 0; }
+};
+
 class RebelStarship : public Starship {
 protected:
 	Speed speed;
-	bool checkSpeed() { return speed >= minSpeed && speed <= 10 * minSpeed; }
+	bool checkSpeed(Speed min, Speed max) const;
 public:
+	std::shared_ptr<DefenseStrategy> dS;
 	RebelStarship(ShieldPoints sP, Speed s) :
 			Starship(sP), speed(s) {}
 //	~RebelStarship() override = 0;

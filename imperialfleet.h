@@ -5,8 +5,14 @@
 #define STARWARS2_IMPERIALFLEET_H
 
 class ImperiumMember : public virtual Participant, public ArmedUnit {
+//	void beHit(ArmedUnit a);
+//	void beHit(RebelStarship r);
 public:
 	explicit ImperiumMember(AttackPower a) : ArmedUnit(a) {}
+	void attack(RebelStarship &r) {
+		r.takeDamage(getAttackPower());
+		takeDamage(r.dS->retaliate());
+	}
 };
 
 class ImperialStarship :
@@ -37,7 +43,7 @@ class Squadron : public ImperiumMember {
 	template <typename T>
 	static AttackPower totalPower(T list);
 public:
-	bool isAlive() const override;
+	size_t count() const override;
 	template <typename T>
 	static std::vector<unitPtr> asMembers(T list);
 	explicit Squadron(std::vector<unitPtr> list);

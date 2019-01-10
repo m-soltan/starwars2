@@ -1,6 +1,4 @@
-#include <utility>
-
-#include <utility>
+#include <iostream>
 
 #include "imperialfleet.h"
 
@@ -10,19 +8,18 @@ using initList = std::initializer_list<T>;
 
 //ImperialStarship::~ImperialStarship() = default;
 
-bool Squadron::isAlive() const {
+size_t Squadron::count() const {
+	size_t ans = 0;
 	for (const auto &e : roster)
-		if (e->isAlive()) return true;
-	return false;
+		ans += e->count();
+	return ans;
 }
 
 template <typename T>
 AttackPower Squadron::totalPower(T list) {
 	AttackPower ans = 0;
-	auto it = list.begin();
-	while (it != list.end()) {
-		ans += it[0]->getAttackPower();
-	}
+	for (const auto &it : list)
+		ans += it->getAttackPower();
 	return ans;
 }
 
@@ -63,7 +60,8 @@ shared_ptr<TIEFighter> createTIEFighter(ShieldPoints sP, AttackPower a) {
 
 shared_ptr<Squadron> createSquadron(
 		std::vector<shared_ptr<ImperialStarship>> list) {
-	return shared_ptr<Squadron>(new Squadron(Squadron::asMembers(std::move(list))));
+	Squadron *s = new Squadron(Squadron::asMembers(std::move(list)));
+	return shared_ptr<Squadron>(s);
 }
 
 shared_ptr<Squadron> createSquadron(
@@ -80,3 +78,4 @@ shared_ptr<Squadron> createSquadron(
 		std::initializer_list<shared_ptr<ImperiumMember>> list) {
 	return shared_ptr<Squadron>(new Squadron(list));
 }
+

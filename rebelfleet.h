@@ -35,34 +35,12 @@ public:
 //	virtual ~ArmedUnit() = 0;
 };
 
-class DefenseStrategy {
-public:
-	virtual AttackPower getRetaliation() const = 0;
-};
-
-class Retaliates : public DefenseStrategy {
-	std::shared_ptr<ArmedUnit> aU;
-public:
-	explicit Retaliates(std::shared_ptr<ArmedUnit> ship) :
-			aU(std::move(ship)) {
-	}
-	AttackPower getRetaliation() const override {
-		return aU->getAttackPower();
-	}
-};
-
-class DoesNotRetaliate : public DefenseStrategy {
-public:
-	AttackPower getRetaliation() const override { return 0; }
-};
-
 class RebelStarship : public Starship {
 	Speed speed;
-	std::shared_ptr<DefenseStrategy> dS;
 protected:
 	bool checkSpeed(Speed min, Speed max) const;
-	virtual void react(std::shared_ptr<Participant>) const = 0;
 public:
+	virtual void react(std::shared_ptr<Participant>) const = 0;
 	RebelStarship(ShieldPoints sP, Speed s) :
 			Starship(sP), speed(s) {
 	}
@@ -71,18 +49,26 @@ public:
 
 class NonRetaliating : public RebelStarship {
 protected:
+	NonRetaliating(ShieldPoints shield, Speed s) :
+			RebelStarship(shield, s) {
+	}
+public:
 	void react(std::shared_ptr<Participant>) const override;
 };
 
 class Retaliating : public RebelStarship, public ArmedUnit {
 protected:
+	Retaliating(ShieldPoints shield, Speed s, AttackPower a) :
+			RebelStarship(shield, s),
+			ArmedUnit(a) {
+	}
+public:
 	void react(std::shared_ptr<Participant>) const override;
 };
 
 class Explorer : public NonRetaliating {
 public:
 	Explorer(ShieldPoints, Speed);
-//	~Explorer() override = default;
 };
 class StarCruiser : public Retaliating {
 public:

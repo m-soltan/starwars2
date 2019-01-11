@@ -10,7 +10,7 @@ using initList = std::initializer_list<T>;
 
 void ImperiumMember::attack(const std::shared_ptr<RebelStarship> &r) {
 	r->takeDamage(getAttackPower());
-	takeDamage(r->dS->retaliate());
+	r->react(std::shared_ptr<Participant>(this));
 }
 
 size_t Squadron::count() const {

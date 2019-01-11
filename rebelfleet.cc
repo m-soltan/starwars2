@@ -38,23 +38,20 @@ void Retaliating::react(std::shared_ptr<Participant> attacker) const {
 //RebelStarship::~RebelStarship() = default;
 
 Explorer::Explorer(ShieldPoints sP, Speed s) :
-		RebelStarship(sP, s) {
+		NonRetaliating(sP, s) {
 	assert(checkSpeed(rebelMid, rebelCap));
-	dS = std::shared_ptr<DefenseStrategy>(new DoesNotRetaliate());
 }
 
 StarCruiser::StarCruiser(ShieldPoints sP, Speed s, AttackPower a) :
-		RebelStarship(sP, s), ArmedUnit(a) {
+		Retaliating(sP, s, a) {
 	assert(checkSpeed(rebelLow, rebelMid));
 	auto ptr = std::shared_ptr<ArmedUnit>(new StarCruiser(*this));
-	dS = std::shared_ptr<DefenseStrategy>(new Retaliates(ptr));
 }
 
 XWing::XWing(ShieldPoints sP, Speed s, AttackPower a) :
-		RebelStarship(sP, s), ArmedUnit(a) {
+		Retaliating(sP, s, a) {
 	assert(checkSpeed(rebelMid, rebelCap));
 	auto ptr = std::shared_ptr<ArmedUnit>(new XWing(*this));
-	dS = std::shared_ptr<DefenseStrategy>(new Retaliates(ptr));
 }
 
 std::shared_ptr<Explorer> createExplorer(ShieldPoints sP, Speed s) {

@@ -20,7 +20,7 @@ public:
 			ImperiumMember(a),
 			Starship(sP) {}
 	void takeDamage(AttackPower a) override { Starship::takeDamage(a); }
-	~ImperialStarship() override = default;
+//	~ImperialStarship() override = default;
 };
 
 class DeathStar : public ImperialStarship {

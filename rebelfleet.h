@@ -16,8 +16,8 @@ public:
 };
 
 class Starship : public virtual Participant {
-protected:
 	ShieldPoints shield;
+protected:
 	explicit Starship(ShieldPoints sP) : shield(sP) {}
 public:
 	ShieldPoints getShield() const;
@@ -28,17 +28,16 @@ public:
 
 class ArmedUnit {
 	AttackPower attackPower;
-public:
+protected:
 	explicit ArmedUnit(AttackPower attack) : attackPower(attack) {}
-	AttackPower getAttackPower();
-	virtual ~ArmedUnit() = 0;
+public:
+	AttackPower getAttackPower() const;
+//	virtual ~ArmedUnit() = 0;
 };
-
-//class ImperiumMember;
 
 class DefenseStrategy {
 public:
-	virtual AttackPower retaliate() const = 0;
+	virtual AttackPower getRetaliation() const = 0;
 };
 
 class Retaliates : public DefenseStrategy {
@@ -47,37 +46,49 @@ public:
 	explicit Retaliates(std::shared_ptr<ArmedUnit> ship) :
 			aU(std::move(ship)) {
 	}
-	AttackPower retaliate() const override {
+	AttackPower getRetaliation() const override {
 		return aU->getAttackPower();
 	}
 };
 
 class DoesNotRetaliate : public DefenseStrategy {
 public:
-	AttackPower retaliate() const override { return 0; }
+	AttackPower getRetaliation() const override { return 0; }
 };
 
 class RebelStarship : public Starship {
 	Speed speed;
+	std::shared_ptr<DefenseStrategy> dS;
 protected:
 	bool checkSpeed(Speed min, Speed max) const;
+	virtual void react(std::shared_ptr<Participant>) const = 0;
 public:
-	std::shared_ptr<DefenseStrategy> dS;
 	RebelStarship(ShieldPoints sP, Speed s) :
-			Starship(sP), speed(s) {}
+			Starship(sP), speed(s) {
+	}
 //	~RebelStarship() override = 0;
 };
 
-class Explorer : public RebelStarship {
+class NonRetaliating : public RebelStarship {
+protected:
+	void react(std::shared_ptr<Participant>) const override;
+};
+
+class Retaliating : public RebelStarship, public ArmedUnit {
+protected:
+	void react(std::shared_ptr<Participant>) const override;
+};
+
+class Explorer : public NonRetaliating {
 public:
 	Explorer(ShieldPoints, Speed);
 //	~Explorer() override = default;
 };
-class StarCruiser : public ArmedUnit, public RebelStarship {
+class StarCruiser : public Retaliating {
 public:
 	StarCruiser(ShieldPoints, Speed, AttackPower);
 };
-class XWing : public ArmedUnit, public RebelStarship {
+class XWing : public Retaliating {
 public:
 	XWing(ShieldPoints, Speed, AttackPower);
 };

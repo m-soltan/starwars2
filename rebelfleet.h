@@ -34,7 +34,7 @@ public:
 	virtual ~ArmedUnit() = 0;
 };
 
-class ImperiumMember;
+//class ImperiumMember;
 
 class DefenseStrategy {
 public:
@@ -58,8 +58,8 @@ public:
 };
 
 class RebelStarship : public Starship {
-protected:
 	Speed speed;
+protected:
 	bool checkSpeed(Speed min, Speed max) const;
 public:
 	std::shared_ptr<DefenseStrategy> dS;

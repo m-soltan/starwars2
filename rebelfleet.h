@@ -14,7 +14,7 @@ class Participant {
 public:
 	virtual size_t count() const = 0;
 	virtual void takeDamage(AttackPower) = 0;
-	virtual ~Participant() = 0;
+	virtual ~Participant() = default;
 };
 
 class Starship : public virtual Participant {
@@ -26,7 +26,7 @@ public:
 	ShieldPoints getShield() const;
 	size_t count() const override;
 	void takeDamage(AttackPower) override;
-	~Starship() override = 0;
+	~Starship() override = default;
 };
 
 class ArmedUnit {
@@ -35,7 +35,7 @@ protected:
 	explicit ArmedUnit(AttackPower attack) : attackPower(attack) {}
 public:
 	AttackPower getAttackPower() const;
-	virtual ~ArmedUnit() = 0;
+	virtual ~ArmedUnit() = default;
 };
 
 class RebelStarship : public Starship {
@@ -47,7 +47,7 @@ public:
 	RebelStarship(ShieldPoints sP, Speed s) :
 			Starship(sP), speed(s) {
 	}
-	~RebelStarship() override = 0;
+	~RebelStarship() override = default;
 };
 
 class NonRetaliating : public RebelStarship {
@@ -57,7 +57,7 @@ protected:
 	}
 public:
 	void react(Participant *) const override;
-	~NonRetaliating() override = 0;
+	~NonRetaliating() override = default;
 };
 
 class Retaliating : public RebelStarship, public ArmedUnit {
@@ -68,7 +68,7 @@ protected:
 	}
 public:
 	void react(Participant *) const override;
-	~Retaliating() override = 0;
+	~Retaliating() override = default;
 };
 
 class Explorer : public NonRetaliating {

@@ -1,19 +1,19 @@
 #include "battle.h"
 
-Clock2_3_5::Clock2_3_5(int timeStart, int timeLimit) :
+SpaceBattle::Clock2_3_5::Clock2_3_5(int timeStart, int timeLimit) :
 		timeStart(timeStart),
 		timeLimit(timeLimit),
 		currentTime(timeStart) {
 }
 
-bool Clock2_3_5::isAttackTime() const {
+bool SpaceBattle::Clock2_3_5::isAttackTime() const {
 	if (currentTime % 2 && currentTime % 3)
 		return false;
 	else
 		return currentTime % 5 != 0;
 }
 
-void Clock2_3_5::modTime(galaxyTime_t x) {
+void SpaceBattle::Clock2_3_5::modTime(galaxyTime_t x) {
 	currentTime = (currentTime + x) % timeLimit;
 }
 

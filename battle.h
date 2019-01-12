@@ -8,23 +8,24 @@ using galaxyTime_t = int;
 constexpr galaxyTime_t defaultMaxTime = INT_MAX;
 constexpr galaxyTime_t defaultMinTime = 0;
 
-class Clock {
-public:
-	virtual void modTime(galaxyTime_t) = 0;
-	virtual bool isAttackTime() const = 0;
-};
-
-class Clock2_3_5 : public Clock {
-	int timeStart, timeLimit;
-	int currentTime = 0;
-public:
-	Clock2_3_5(int timeStart, int timeLimit);
-	
-	bool isAttackTime() const override;
-	void modTime(galaxyTime_t x) override;
-};
-
 class SpaceBattle {
+	class Clock {
+	public:
+		virtual void modTime(galaxyTime_t) = 0;
+		virtual bool isAttackTime() const = 0;
+		virtual ~Clock() = default;
+	};
+	
+	class Clock2_3_5 : public Clock {
+		int timeStart, timeLimit;
+		int currentTime = 0;
+	public:
+		Clock2_3_5(int timeStart, int timeLimit);
+		
+		bool isAttackTime() const override;
+		void modTime(galaxyTime_t x) override;
+	};
+	
 	std::shared_ptr<Clock> clock;
 	std::vector<std::shared_ptr<ImperiumMember>> imperials;
 	std::vector<std::shared_ptr<RebelStarship>> rebels;

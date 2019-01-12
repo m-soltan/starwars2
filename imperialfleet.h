@@ -5,14 +5,14 @@
 #define STARWARS2_IMPERIALFLEET_H
 
 class ImperiumMember : public virtual Participant, public ArmedUnit {
-//	void beHit(ArmedUnit a);
-//	void beHit(RebelStarship r);
 public:
 	explicit ImperiumMember(AttackPower a) : ArmedUnit(a) {}
 	void attack(const std::shared_ptr<RebelStarship> &r);
-	~ImperiumMember() override = 0;
+	~ImperiumMember() override = default;
 };
 
+// as required by the project description
+// doesn't do much besides passing the inheritance from Starship
 class ImperialStarship :
 		public ImperiumMember,
 		public Starship {
@@ -21,7 +21,7 @@ public:
 			ImperiumMember(a),
 			Starship(sP) {
 	}
-	~ImperialStarship() override = 0;
+	~ImperialStarship() override = default;
 };
 
 class DeathStar : public ImperialStarship {

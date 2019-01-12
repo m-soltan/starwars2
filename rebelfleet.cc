@@ -12,34 +12,21 @@ size_t Starship::count() const {
 }
 
 void Starship::takeDamage(AttackPower a) {
-//	assert(a >= 0);
+	assert(a >= 0);
 	shield = std::max(0, shield - a);
 }
 
-
-Participant::~Participant() = default;
-
-Starship::~Starship() = default;
-
 AttackPower ArmedUnit::getAttackPower() const { return attackPower; }
-
-ArmedUnit::~ArmedUnit() = default;
 
 bool RebelStarship::checkSpeed(Speed min, Speed max) const {
 	return speed >= min && speed < max;
 }
 
-RebelStarship::~RebelStarship() = default;
-
 void NonRetaliating::react(Participant *) const {}
-
-NonRetaliating::~NonRetaliating() = default;
 
 void Retaliating::react(Participant *attacker) const {
 	attacker->takeDamage(getAttackPower());
 }
-
-Retaliating::~Retaliating() = default;
 
 Explorer::Explorer(ShieldPoints sP, Speed s) :
 		NonRetaliating(sP, s) {

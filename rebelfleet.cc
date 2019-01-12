@@ -17,9 +17,9 @@ void Starship::takeDamage(AttackPower a) {
 }
 
 
-//Participant::~Participant() = default;
+Participant::~Participant() = default;
 
-//Starship::~Starship() = default;
+Starship::~Starship() = default;
 
 AttackPower ArmedUnit::getAttackPower() const { return attackPower; }
 

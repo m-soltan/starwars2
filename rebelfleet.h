@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <climits>
+#include <memory>
 #include <cassert>
 
 #ifndef STARWARS2_REBELFLEET_H
@@ -12,18 +14,19 @@ class Participant {
 public:
 	virtual size_t count() const = 0;
 	virtual void takeDamage(AttackPower) = 0;
-//	virtual ~Participant() = 0;
+	virtual ~Participant() = 0;
 };
 
 class Starship : public virtual Participant {
 	ShieldPoints shield;
 protected:
+public:
 	explicit Starship(ShieldPoints sP) : shield(sP) {}
 public:
 	ShieldPoints getShield() const;
 	size_t count() const override;
 	void takeDamage(AttackPower) override;
-//	~Starship() override = 0;
+	~Starship() override = 0;
 };
 
 class ArmedUnit {

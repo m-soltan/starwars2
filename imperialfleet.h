@@ -10,6 +10,7 @@ class ImperiumMember : public virtual Participant, public ArmedUnit {
 public:
 	explicit ImperiumMember(AttackPower a) : ArmedUnit(a) {}
 	void attack(const std::shared_ptr<RebelStarship> &r);
+	~ImperiumMember() override = 0;
 };
 
 class ImperialStarship :
@@ -18,9 +19,9 @@ class ImperialStarship :
 public:
 	ImperialStarship(ShieldPoints sP, AttackPower a) :
 			ImperiumMember(a),
-			Starship(sP) {}
-	void takeDamage(AttackPower a) override { Starship::takeDamage(a); }
-//	~ImperialStarship() override = default;
+			Starship(sP) {
+	}
+	~ImperialStarship() override = 0;
 };
 
 class DeathStar : public ImperialStarship {
@@ -31,7 +32,8 @@ public:
 class ImperialDestroyer : public ImperialStarship {
 public:
 	ImperialDestroyer(ShieldPoints sP, AttackPower a) :
-			ImperialStarship(sP, a) {}
+			ImperialStarship(sP, a) {
+	}
 };
 
 class Squadron : public ImperiumMember {
@@ -40,9 +42,9 @@ class Squadron : public ImperiumMember {
 	template <typename T>
 	static AttackPower totalPower(T list);
 public:
-	size_t count() const override;
 	template <typename T>
 	static std::vector<unitPtr> upCastPointers(T list);
+	size_t count() const override;
 	explicit Squadron(std::vector<unitPtr> list);
 	Squadron(std::initializer_list<unitPtr> list);
 	void takeDamage(AttackPower) override;
@@ -51,7 +53,8 @@ public:
 class TIEFighter : public ImperialStarship {
 public:
 	TIEFighter(ShieldPoints sP, AttackPower a) :
-			ImperialStarship(sP, a) {}
+			ImperialStarship(sP, a) {
+	}
 };
 
 std::shared_ptr<DeathStar> createDeathStar(ShieldPoints sP, AttackPower a);

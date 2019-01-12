@@ -6,12 +6,14 @@ using std::shared_ptr;
 template <typename T>
 using initList = std::initializer_list<T>;
 
-//ImperialStarship::~ImperialStarship() = default;
+ImperialStarship::~ImperialStarship() = default;
 
 void ImperiumMember::attack(const std::shared_ptr<RebelStarship> &r) {
 	r->takeDamage(getAttackPower());
 	r->react(this);
 }
+
+ImperiumMember::~ImperiumMember() = default;
 
 size_t Squadron::count() const {
 	size_t ans = 0;

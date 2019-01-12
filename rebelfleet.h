@@ -47,7 +47,7 @@ public:
 	RebelStarship(ShieldPoints sP, Speed s) :
 			Starship(sP), speed(s) {
 	}
-//	~RebelStarship() override = 0;
+	~RebelStarship() override = 0;
 };
 
 class NonRetaliating : public RebelStarship {
@@ -57,6 +57,7 @@ protected:
 	}
 public:
 	void react(Participant *) const override;
+	~NonRetaliating() override = 0;
 };
 
 class Retaliating : public RebelStarship, public ArmedUnit {
@@ -67,6 +68,7 @@ protected:
 	}
 public:
 	void react(Participant *) const override;
+	~Retaliating() override = 0;
 };
 
 class Explorer : public NonRetaliating {

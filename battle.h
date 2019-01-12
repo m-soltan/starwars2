@@ -1,5 +1,4 @@
 #include <iostream>
-#include "rebelfleet.h"
 #include "imperialfleet.h"
 
 #ifndef STARWARS2_BATTLE_H

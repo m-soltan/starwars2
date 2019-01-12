@@ -14,7 +14,7 @@ bool Clock2_3_5::isAttackTime() const {
 }
 
 void Clock2_3_5::modTime(galaxyTime_t x) {
-	currentTime += x;
+	currentTime = (currentTime + x) % timeLimit;
 }
 
 void SpaceBattle::announceWinner() {

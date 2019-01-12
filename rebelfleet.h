@@ -20,11 +20,10 @@ public:
 class Starship : public virtual Participant {
 	ShieldPoints shield;
 protected:
-public:
 	explicit Starship(ShieldPoints sP) : shield(sP) {}
 public:
-	ShieldPoints getShield() const;
 	size_t count() const override;
+	ShieldPoints getShield() const;
 	void takeDamage(AttackPower) override;
 	~Starship() override = default;
 };
@@ -50,14 +49,14 @@ public:
 	~RebelStarship() override = default;
 };
 
-class NonRetaliating : public RebelStarship {
+class NotReacting : public RebelStarship {
 protected:
-	NonRetaliating(ShieldPoints shield, Speed s) :
+	NotReacting(ShieldPoints shield, Speed s) :
 			RebelStarship(shield, s) {
 	}
 public:
 	void react(Participant *) const override;
-	~NonRetaliating() override = default;
+	~NotReacting() override = default;
 };
 
 class Retaliating : public RebelStarship, public ArmedUnit {
@@ -71,7 +70,7 @@ public:
 	~Retaliating() override = default;
 };
 
-class Explorer : public NonRetaliating {
+class Explorer : public NotReacting {
 public:
 	Explorer(ShieldPoints, Speed);
 };

@@ -13,11 +13,8 @@ void ImperiumMember::attack(const std::shared_ptr<RebelStarship> &r) {
 
 size_t Squadron::count() const {
 	size_t ans = 0;
-	size_t i = 0;
-	while (i < roster.size()) {
-		ans += roster[i]->count();
-		++i;
-	}
+	for (const auto &unit : roster)
+		ans += unit->count();
 	return ans;
 }
 

@@ -22,14 +22,14 @@ bool RebelStarship::checkSpeed(Speed min, Speed max) const {
 	return speed >= min && speed < max;
 }
 
-void NonRetaliating::react(Participant *) const {}
+void NotReacting::react(Participant *) const {}
 
 void Retaliating::react(Participant *attacker) const {
 	attacker->takeDamage(getAttackPower());
 }
 
 Explorer::Explorer(ShieldPoints sP, Speed s) :
-		NonRetaliating(sP, s) {
+		NotReacting(sP, s) {
 	assert(checkSpeed(rebelMid, rebelCap));
 }
 

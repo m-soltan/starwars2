@@ -32,7 +32,7 @@ protected:
 	explicit ArmedUnit(AttackPower attack) : attackPower(attack) {}
 public:
 	AttackPower getAttackPower() const;
-//	virtual ~ArmedUnit() = 0;
+	virtual ~ArmedUnit() = 0;
 };
 
 class RebelStarship : public Starship {
@@ -40,7 +40,7 @@ class RebelStarship : public Starship {
 protected:
 	bool checkSpeed(Speed min, Speed max) const;
 public:
-	virtual void react(std::shared_ptr<Participant>) const = 0;
+	virtual void react(Participant *) const = 0;
 	RebelStarship(ShieldPoints sP, Speed s) :
 			Starship(sP), speed(s) {
 	}
@@ -53,7 +53,7 @@ protected:
 			RebelStarship(shield, s) {
 	}
 public:
-	void react(std::shared_ptr<Participant>) const override;
+	void react(Participant *) const override;
 };
 
 class Retaliating : public RebelStarship, public ArmedUnit {
@@ -63,7 +63,7 @@ protected:
 			ArmedUnit(a) {
 	}
 public:
-	void react(std::shared_ptr<Participant>) const override;
+	void react(Participant *) const override;
 };
 
 class Explorer : public NonRetaliating {

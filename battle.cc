@@ -32,10 +32,10 @@ void SpaceBattle::announceWinner() {
 }
 
 void SpaceBattle::attack() {
-	for (auto &e : imperials) {
-		for (auto &f : rebels) {
-			if (e->count() && f->count())
-				e->attack(f);
+	for (auto &imp : imperials) {
+		for (auto &reb : rebels) {
+			if (imp->count() && reb->count())
+				imp->attack(reb);
 		}
 	}
 }

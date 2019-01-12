@@ -23,15 +23,15 @@ void Starship::takeDamage(AttackPower a) {
 
 AttackPower ArmedUnit::getAttackPower() const { return attackPower; }
 
-//ArmedUnit::~ArmedUnit() = default;
+ArmedUnit::~ArmedUnit() = default;
 
 bool RebelStarship::checkSpeed(Speed min, Speed max) const {
 	return speed >= min && speed < max;
 }
 
-void NonRetaliating::react(std::shared_ptr<Participant>) const {}
+void NonRetaliating::react(Participant *) const {}
 
-void Retaliating::react(std::shared_ptr<Participant> attacker) const {
+void Retaliating::react(Participant *attacker) const {
 	attacker->takeDamage(getAttackPower());
 }
 

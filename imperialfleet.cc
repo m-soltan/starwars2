@@ -66,22 +66,6 @@ shared_ptr<TIEFighter> createTIEFighter(ShieldPoints sP, AttackPower a) {
 }
 
 shared_ptr<Squadron> createSquadron(
-		std::vector<shared_ptr<ImperialStarship>> list) {
-	Squadron *s = new Squadron(Squadron::upCastPointers(std::move(list)));
-	return shared_ptr<Squadron>(s);
-}
-
-shared_ptr<Squadron> createSquadron(
 		std::vector<shared_ptr<ImperiumMember>> list) {
 	return shared_ptr<Squadron>(new Squadron(std::move(list)));
-}
-
-shared_ptr<Squadron> createSquadron(
-		std::initializer_list<shared_ptr<ImperialStarship>> list) {
-	return shared_ptr<Squadron>(new Squadron(Squadron::upCastPointers(list)));
-}
-
-shared_ptr<Squadron> createSquadron(
-		std::initializer_list<shared_ptr<ImperiumMember>> list) {
-	return shared_ptr<Squadron>(new Squadron(list));
 }

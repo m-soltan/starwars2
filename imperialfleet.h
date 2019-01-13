@@ -11,8 +11,6 @@ public:
 	~ImperiumMember() override = default;
 };
 
-// as required by the project description
-// doesn't do much besides passing the inheritance from Starship
 class ImperialStarship :
 		public ImperiumMember,
 		public Starship {
@@ -39,8 +37,7 @@ public:
 class Squadron : public ImperiumMember {
 	typedef std::shared_ptr<ImperiumMember> unitPtr;
 	std::vector<unitPtr> roster;
-	template <typename T>
-	static AttackPower totalPower(T list);
+	static AttackPower totalPower(std::vector<unitPtr> list);
 public:
 	AttackPower getAttackPower() const override;
 	ShieldPoints getShield() const override;

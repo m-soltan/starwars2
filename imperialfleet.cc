@@ -18,8 +18,7 @@ size_t Squadron::count() const {
 	return ans;
 }
 
-template <typename T>
-AttackPower Squadron::totalPower(T list) {
+AttackPower Squadron::totalPower(std::vector<Squadron::unitPtr> list) {
 	AttackPower ans = 0;
 	for (const auto &it : list)
 		if (it->count())
@@ -28,7 +27,7 @@ AttackPower Squadron::totalPower(T list) {
 }
 
 AttackPower Squadron::getAttackPower() const {
-	return totalPower<std::vector<unitPtr>>(roster);
+	return totalPower(roster);
 }
 
 ShieldPoints Squadron::getShield() const {
@@ -39,7 +38,7 @@ ShieldPoints Squadron::getShield() const {
 }
 
 Squadron::Squadron(std::vector<Squadron::unitPtr> list) :
-		ImperiumMember(totalPower<std::vector<Squadron::unitPtr>>(list)),
+		ImperiumMember(totalPower(list)),
 		roster(std::move(list)) {}
 
 void Squadron::takeDamage(AttackPower a) {

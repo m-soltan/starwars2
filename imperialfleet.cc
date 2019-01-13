@@ -39,7 +39,9 @@ ShieldPoints Squadron::getShield() const {
 
 Squadron::Squadron(std::vector<Squadron::unitPtr> list) :
 		ImperiumMember(totalPower(list)),
-		roster(std::move(list)) {}
+		roster(std::move(list)) {
+	assert(!roster.empty());
+}
 
 void Squadron::takeDamage(AttackPower a) {
 	for (const auto &e : roster)

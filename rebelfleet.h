@@ -13,6 +13,7 @@ using Speed = int;
 class Participant {
 public:
 	virtual size_t count() const = 0;
+	virtual ShieldPoints getShield() const = 0;
 	virtual void takeDamage(AttackPower) = 0;
 	virtual ~Participant() = default;
 };
@@ -23,7 +24,7 @@ protected:
 	explicit Starship(ShieldPoints sP) : shield(sP) {}
 public:
 	size_t count() const override;
-	ShieldPoints getShield() const;
+	ShieldPoints getShield() const override;
 	void takeDamage(AttackPower) override;
 	~Starship() override = default;
 };
@@ -33,7 +34,7 @@ class ArmedUnit {
 protected:
 	explicit ArmedUnit(AttackPower attack) : attackPower(attack) {}
 public:
-	AttackPower getAttackPower() const;
+	virtual AttackPower getAttackPower() const;
 	virtual ~ArmedUnit() = default;
 };
 

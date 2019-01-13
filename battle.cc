@@ -34,7 +34,7 @@ void SpaceBattle::announceWinner() {
 void SpaceBattle::attack() {
 	for (auto &imp : imperials) {
 		for (auto &reb : rebels) {
-			if (imp->count() && reb->count())
+			if (imp->getShield() && reb->getShield())
 				imp->attack(reb);
 		}
 	}

@@ -42,11 +42,10 @@ class Squadron : public ImperiumMember {
 	template <typename T>
 	static AttackPower totalPower(T list);
 public:
-	template <typename T>
-	static std::vector<unitPtr> upCastPointers(T list);
+	AttackPower getAttackPower() const override;
+	ShieldPoints getShield() const override;
 	size_t count() const override;
 	explicit Squadron(std::vector<unitPtr> list);
-	Squadron(std::initializer_list<unitPtr> list);
 	void takeDamage(AttackPower) override;
 };
 

@@ -27,12 +27,14 @@ AttackPower Squadron::totalPower(T list) {
 	return ans;
 }
 
-template <typename T>
-std::vector<Squadron::unitPtr> Squadron::upCastPointers(T list) {
-	std::vector<Squadron::unitPtr> ans;
-	ans.reserve(list.size());
-	for (const auto &e : list)
-		ans.emplace_back(Squadron::unitPtr(e));
+AttackPower Squadron::getAttackPower() const {
+	return totalPower<std::vector<unitPtr>>(roster);
+}
+
+ShieldPoints Squadron::getShield() const {
+	ShieldPoints ans = 0;
+	for (const auto &it : roster)
+		ans += it->getShield();
 	return ans;
 }
 
@@ -40,12 +42,10 @@ Squadron::Squadron(std::vector<Squadron::unitPtr> list) :
 		ImperiumMember(totalPower<std::vector<Squadron::unitPtr>>(list)),
 		roster(std::move(list)) {}
 
-Squadron::Squadron(initList<Squadron::unitPtr> list) :
-		ImperiumMember(totalPower<initList<Squadron::unitPtr>>(list)),
-		roster(list) {}
-
 void Squadron::takeDamage(AttackPower a) {
-	for (const auto &e : roster)  e->takeDamage(a);
+	for (const auto &e : roster)
+		if (e->count())
+			e->takeDamage(a);
 }
 
 shared_ptr<DeathStar> createDeathStar(ShieldPoints sP, AttackPower a) {
@@ -58,11 +58,11 @@ shared_ptr<ImperialDestroyer> createImperialDestroyer(
 	return shared_ptr<ImperialDestroyer>(new ImperialDestroyer(sP, a));
 }
 
-shared_ptr<TIEFighter> createTIEFighter(ShieldPoints sP, AttackPower a) {
-	return shared_ptr<TIEFighter>(new TIEFighter(sP, a));
-}
-
 shared_ptr<Squadron> createSquadron(
 		std::vector<shared_ptr<ImperiumMember>> list) {
 	return shared_ptr<Squadron>(new Squadron(std::move(list)));
+}
+
+shared_ptr<TIEFighter> createTIEFighter(ShieldPoints sP, AttackPower a) {
+	return shared_ptr<TIEFighter>(new TIEFighter(sP, a));
 }
